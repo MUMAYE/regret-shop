@@ -190,7 +190,7 @@ ${1}calc(72px + env(safe-area-inset-bottom,0px))}
 
 /* ── 弹窗 ── */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);z-index:100;align-items:center;justify-content:center;padding:20px}
-.overlay.vis{display:flex}
+.overlay.vis{display:flex!important}
 .modal{background:linear-gradient(180deg,var(--card) 0%,var(--bg2) 100%);border:1px solid rgba(201,163,74,0.3);border-radius:20px;padding:28px;max-width:440px;width:100%;animation:mslide 0.25s ease;position:relative}
 .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--zhu),var(--gold),var(--qing2));border-radius:20px 20px 0 0}
 @keyframes mslide{from{opacity:0;transform:scale(0.92) translateY(12px)}to{opacity:1;transform:none}}
@@ -348,7 +348,7 @@ ${1}calc(72px + env(safe-area-inset-bottom,0px))}
 </div>
 
 <!-- 出售弹窗 -->
-<div class="overlay" id="sell-overlay">
+<div class="overlay" id="sell-overlay" style="display:none">
   <div class="modal">
     <div class="modal-title">挂牌出售药方</div>
     <div class="modal-sub">将你的经历炼为一张药方，售予有缘人</div>
@@ -369,7 +369,7 @@ ${1}calc(72px + env(safe-area-inset-bottom,0px))}
 </div>
 
 <!-- 购买弹窗 -->
-<div class="overlay" id="buy-overlay">
+<div class="overlay" id="buy-overlay" style="display:none">
   <div class="modal">
     <div class="modal-title" id="bm-name"></div>
     <div class="modal-sub" id="bm-meta"></div>
@@ -390,7 +390,7 @@ ${1}calc(72px + env(safe-area-inset-bottom,0px))}
 </div>
 
 <!-- 成功弹窗 -->
-<div class="overlay" id="ok-overlay">
+<div class="overlay" id="ok-overlay" style="display:none">
   <div class="modal ok-center">
     <div class="ok-ico" id="ok-ico">✅</div>
     <div class="ok-title" id="ok-title"></div>
