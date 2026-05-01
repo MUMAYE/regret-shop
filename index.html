@@ -481,10 +481,6 @@ function startMusic(){
 function stopMusic(){
   clearTimeout(_mTimer);
   if(_mCtx){try{_mCtx.close();}catch(e){}}_mCtx=null;
-}else {
-    musicOn=false;btn.textContent='🎵';btn.style.color='var(--gold)';
-    musicNodes.forEach(n=>{try{n.stop()}catch(e){}});musicNodes=[];
-  }
 }
 
 // ── 数据 ──
