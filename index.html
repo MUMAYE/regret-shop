@@ -475,6 +475,152 @@ function autoStartMusic(){
   document.removeEventListener("click",autoStartMusic);
   document.removeEventListener("touchstart",autoStartMusic);
 }
+
+function $(id){return document.getElementById(id)}
+function updateBal(){document.getElementById('bal-val').textContent=bal}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('vis');setTimeout(()=>t.classList.remove('vis'),2500)}
+function closeOverlay(id){document.getElementById(id).classList.remove('vis')}
+function showOk(ico,title,msg){document.getElementById('ok-ico').textContent=ico;document.getElementById('ok-title').textContent=title;document.getElementById('ok-msg').textContent=msg;document.getElementById('ok-overlay').classList.add('vis')}
+document.querySelectorAll('.overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('vis')}));
+
+
+function $(id){return document.getElementById(id)}
+function updateBal(){document.getElementById('bal-val').textContent=bal}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('vis');setTimeout(()=>t.classList.remove('vis'),2500)}
+function closeOverlay(id){document.getElementById(id).classList.remove('vis')}
+function showOk(ico,title,msg){document.getElementById('ok-ico').textContent=ico;document.getElementById('ok-title').textContent=title;document.getElementById('ok-msg').textContent=msg;document.getElementById('ok-overlay').classList.add('vis')}
+document.querySelectorAll('.overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('vis')}));
+const MOON_PHASES={'p-intro':'🌙','p-quiz':'🌙','p-result':'🌕','p-pool':'🌘'};
+function updateMoon(pageId){
+  const mp=document.getElementById('moon-phase');
+  if(mp&&MOON_PHASES[pageId])mp.textContent=MOON_PHASES[pageId];
+  if(pageId==='p-result'){setTimeout(()=>{const bm=document.getElementById('beast-in-moon');if(bm&&curBeast){bm.textContent=curBeast.emoji;bm.style.opacity='0.7';}},400);}
+  else{const bm=document.getElementById('beast-in-moon');if(bm)bm.style.opacity='0';}
+}
+function navTo(pageId,navId){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.querySelectorAll('.bnav').forEach(b=>b.classList.remove('on'));
+  document.getElementById(navId).classList.add('on');
+  window.scrollTo(0,0);
+  updateMoon(pageId);
+  const tb=document.getElementById('topbar');
+  tb.classList.toggle('vis', pageId!=='p-intro');
+}
+function choosePill(type){
+  pill=type;answers=[];curQ=0;
+  document.getElementById('qz-badge').textContent=type==='zhu'?'朱砂丸问诊':'忘忧丸问诊';
+  document.getElementById('qz-badge').className='qz-badge '+(type==='zhu'?'zhu':'qing');
+  renderQ();navTo('p-quiz','bnav-quiz');
+}
+function renderQ(){
+  const q=QS[curQ],tot=QS.length,pct=Math.round(((curQ+1)/tot)*100);
+  document.getElementById('prog-txt').textContent='炼药进度：'+(curQ+1)+' / '+tot;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('qnum').textContent='Q'+(curQ+1)+' ';
+  document.getElementById('qtxt').textContent=q.q;
+  document.getElementById('opts-list').innerHTML=q.opts.map((o,i)=>'<button class="opt-item" onclick="pickOpt(this,'+i+')"><span class="opt-key">'+String.fromCharCode(65+i)+'</span>'+o+'</button>').join('');
+  document.getElementById('btn-next').classList.remove('on');
+}
+function pickOpt(el,idx){
+  document.querySelectorAll('.opt-item').forEach(b=>b.classList.remove('chosen'));
+  el.classList.add('chosen');el._idx=idx;
+  document.getElementById('btn-next').classList.add('on');
+}
+function nextQ(){
+  const sel=document.querySelector('.opt-item.chosen');if(!sel)return;
+  answers.push({q:curQ,w:QS[curQ].w[sel._idx]});curQ++;
+  if(curQ>=QS.length){calcResult();return;}renderQ();
+}
+function backToHome(){pill='';answers=[];curQ=0;navTo('p-intro','bnav-home')}
+function resetAll(){pill='';answers=[];curQ=0;navTo('p-intro','bnav-home')}
+function calcResult(){
+  const pool=BEASTS.filter(b=>b.type==='both'||b.type===pill);
+  const total=answers.reduce((s,a)=>s+a.w,0);
+  curBeast=pool[total%pool.length];
+  document.getElementById('r-ico').textContent=curBeast.emoji;
+  document.getElementById('r-nm').textContent=curBeast.name;
+  const pt=document.getElementById('r-ptag');
+  if(pill==='zhu'){pt.textContent='朱砂丸';pt.style.cssText='background:rgba(176,28,28,0.15);color:#ff6b6b;border:1px solid rgba(176,28,28,0.3);border-radius:10px;font-size:11px;padding:3px 14px;letter-spacing:1px'}
+  else{pt.textContent='忘忧丸';pt.style.cssText='background:rgba(26,53,112,0.2);color:#a0c8ff;border:1px solid rgba(26,53,112,0.35);border-radius:10px;font-size:11px;padding:3px 14px;letter-spacing:1px'}
+  document.getElementById('r-symptom').textContent=curBeast.symptom;
+  document.getElementById('r-merit').textContent=curBeast.merit;
+  document.getElementById('r-remedy').textContent=curBeast.remedy;
+  document.getElementById('r-sign').textContent='「'+curBeast.sign+'」';
+  navTo('p-result','bnav-result');
+}
+function renderPool(){
+  let data=POOL;
+  if(poolFilter==='zhu')data=POOL.filter(r=>r.type==='zhu');
+  else if(poolFilter==='qing')data=POOL.filter(r=>r.type==='qing'||r.type==='both');
+  else if(poolFilter==='mine')data=POOL.filter(r=>r.mine||myBox.includes(r.id));
+  const el=document.getElementById('recipe-list');
+  if(!data.length){el.innerHTML='<div style="text-align:center;padding:48px;color:var(--muted)">此处尚空，快去问诊炼药</div>';return}
+  el.innerHTML=data.map(r=>{
+    const owned=myBox.includes(r.id);
+    const tl=r.type==='zhu'?'朱砂丸':r.type==='qing'?'忘忧丸':'通用';
+    const buyBtn=owned?'<span class="owned-tag">✓ 已收入药匣</span>':r.mine?'<span class="mine-tag">我的药方</span>':'<button class="btn-buy-r" onclick="openBuyModal('+r.id+')"'+(bal<r.price?' disabled':'')+'>收入药匣</button>';
+    const rxns='<button class="rxn '+(r.rxn._s?'lit':'')+'" onclick="react('+r.id+',"sugar",this)">🍬 '+r.rxn.sugar+'</button><button class="rxn '+(r.rxn._p?'lit':'')+'" onclick="react('+r.id+',"paper",this)">🧻 '+r.rxn.paper+'</button><button class="rxn '+(r.rxn._h?'lit':'')+'" onclick="react('+r.id+',"ha",this)">哈哈 '+r.rxn.ha+'</button>';
+    return '<div class="recipe '+r.type+'"><div class="recipe-meta"><span class="recipe-beast">'+r.bIco+' '+r.beast+' · '+tl+'</span><span class="recipe-price">'+r.price+'<span class="recipe-price-u"> 两</span></span></div><div class="recipe-name">《'+r.name+'》</div><div class="recipe-symptom">'+r.symptom+'</div><div class="recipe-sign">「'+r.sign+'」</div><div class="recipe-foot"><div class="rxns">'+rxns+'</div>'+buyBtn+'</div></div>';
+  }).join('');
+}
+function filterPool(f,btn){poolFilter=f;document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderPool();}
+function react(id,key,btn){
+  const r=POOL.find(x=>x.id===id);if(!r)return;
+  const ks={'sugar':'_s','paper':'_p','ha':'_h'};
+  const k=ks[key];const ico={'sugar':'🍬 ','paper':'🧻 ','ha':'哈哈 '}[key];
+  if(r.rxn[k]){r.rxn[key]--;r.rxn[k]=false;btn.classList.remove('lit')}
+  else{r.rxn[key]++;r.rxn[k]=true;btn.classList.add('lit')}
+  btn.textContent=ico+r.rxn[key];
+}
+function openBuyModal(id){
+  const r=POOL.find(x=>x.id===id);if(!r)return;buyId=id;
+  document.getElementById('bm-name').textContent='《'+r.name+'》';
+  document.getElementById('bm-meta').textContent=r.beast+' '+r.bIco;
+  document.getElementById('bm-symptom').textContent=r.symptom;
+  document.getElementById('bm-sign').textContent='「'+r.sign+'」';
+  document.getElementById('bm-price').textContent=r.price+' 两';
+  const btn=document.getElementById('bm-confirm');btn.disabled=bal<r.price;btn.textContent=bal<r.price?'药钱不足':'收入药匿';
+  document.getElementById('buy-overlay').classList.add('vis');
+}
+function confirmBuy(){
+  const r=POOL.find(x=>x.id===buyId);if(!r||myBox.includes(r.id))return;
+  bal-=r.price;updateBal();myBox.push(r.id);
+  closeOverlay('buy-overlay');renderPool();
+  showOk('🌃','药方入匿','《'+r.name+'》已收入。「'+r.sign+'」 剩余'+bal+'两');
+}
+function openSellModal(){document.getElementById('sell-overlay').classList.add('vis')}
+function openSellFromResult(){
+  if(!curBeast)return;
+  document.getElementById('s-name').value=curBeast.name+'后悔药';
+  document.getElementById('s-symptom').value='';
+  document.getElementById('s-sign').value=curBeast.sign;
+  document.getElementById('s-type').value=pill;
+  document.getElementById('s-price').value='';
+  document.getElementById('sell-overlay').classList.add('vis');
+}
+function confirmSell(){
+  const name=document.getElementById('s-name').value.trim();
+  const symptom=document.getElementById('s-symptom').value.trim();
+  const sign=document.getElementById('s-sign').value.trim();
+  const type=document.getElementById('s-type').value;
+  const price=parseInt(document.getElementById('s-price').value);
+  if(!name){showToast('药方名称不能为空');return}
+  if(!symptom){showToast('适用症状写一下嚓');return}
+  if(!price||price<10){showToast('价格至少10两');return}
+  const b=curBeast||BEASTS[0];
+  POOL.unshift({id:Date.now(),name,symptom,sign:sign||'此药方有效，亲测。',type,beast:b.name,bIco:b.emoji,price,rxn:{sugar:0,paper:0,ha:0},owned:false,mine:true});
+  closeOverlay('sell-overlay');
+  document.getElementById('s-name').value='';
+  document.getElementById('s-symptom').value='';
+  document.getElementById('s-sign').value='';
+  document.getElementById('s-price').value='';
+  renderPool();
+  showOk('📌','药方已挂牌','《'+name+'》已入瑞池，定价 '+price+' 两。等一个有缘人。');
+  navTo('p-pool','bnav-pool');
+}
+renderPool();updateBal();
 document.addEventListener("click",autoStartMusic);
 document.addEventListener("touchstart",autoStartMusic);
 </script>
