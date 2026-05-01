@@ -620,5 +620,60 @@ function _autoMusic(){toggleMusic();document.removeEventListener('click',_autoMu
 document.addEventListener('click',_autoMusic);
 document.addEventListener('touchstart',_autoMusic);
 </script>
+
+<script>
+// 强制隐藏所有弹窗
+document.querySelectorAll('[id$="-overlay"]').forEach(el=>{
+  el.style.cssText='display:none!important;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)';
+});
+// 覆写openSellFromResult：先跳到结果页再弹窗
+const _orig=window.openSellFromResult;
+window.openSellFromResult=function(){
+  // 确保在结果页
+  if(!document.getElementById('p-result').classList.contains('active')){
+    navTo('p-result','bnav-result');
+    setTimeout(()=>{
+      if(curBeast){
+        document.getElementById('s-name').value=curBeast.name+'后悔药';
+        document.getElementById('s-sign').value=curBeast.sign;
+        document.getElementById('s-type').value=pill||'zhu';
+        document.getElementById('s-price').value='';
+        document.getElementById('s-symptom').value='';
+      }
+      const el=document.getElementById('sell-overlay');
+      el.style.cssText='display:flex!important;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)';
+    },100);
+  } else {
+    if(curBeast){
+      document.getElementById('s-name').value=curBeast.name+'后悔药';
+      document.getElementById('s-sign').value=curBeast.sign;
+      document.getElementById('s-type').value=pill||'zhu';
+      document.getElementById('s-price').value='';
+      document.getElementById('s-symptom').value='';
+    }
+    const el=document.getElementById('sell-overlay');
+    el.style.cssText='display:flex!important;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)';
+  }
+};
+// 覆写closeOverlay确保能关掉
+const _closeOrig=window.closeOverlay;
+window.closeOverlay=function(id){
+  document.getElementById(id).style.cssText='display:none!important;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)';
+};
+// 覆写openBuyModal
+const _origBuy=window.openBuyModal;
+window.openBuyModal=function(id){
+  _origBuy(id);
+  const el=document.getElementById('buy-overlay');
+  el.style.cssText='display:flex!important;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)';
+};
+window.showOk=function(ico,title,msg){
+  document.getElementById('ok-ico').textContent=ico;
+  document.getElementById('ok-title').textContent=title;
+  document.getElementById('ok-msg').textContent=msg;
+  const el=document.getElementById('ok-overlay');
+  el.style.cssText='display:flex!important;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)';
+};
+</script>
 </body>
 </html>
