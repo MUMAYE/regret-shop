@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>后悔小卖部 · 专治嘴硬内耗想太多</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap');
@@ -189,8 +189,8 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
 .mine-tag{font-size:11px;color:var(--muted);letter-spacing:1px}
 
 /* ── 底部导航 ── */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(8,6,14,0.96);border-top:1px solid var(--border);display:flex;justify-content:center;backdrop-filter:blur(12px)}
-.bnav{flex:1;max-width:110px;padding:10px 6px;background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:1px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(8,6,14,0.96);border-top:1px solid var(--border);display:flex;justify-content:center;backdrop-filter:blur(12px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.bnav{flex:1;max-width:110px;padding:12px 6px;min-height:52px;background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:1px}
 .bnav .bi{font-size:20px}
 .bnav.on{color:var(--gold)}
 .bnav:hover{color:var(--text)}
@@ -202,7 +202,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
 .tb-bal{font-size:13px;color:var(--gold);font-weight:700}
 .tb-bal span{font-size:11px;color:var(--muted);margin-right:3px}
 
-.main-pad{padding-top:50px;padding-bottom:72px}
+.main-pad{padding-top:50px;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 
 /* ── 弹窗 ── */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);z-index:100;align-items:center;justify-content:center;padding:20px}
