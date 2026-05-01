@@ -261,8 +261,8 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
 
 <!-- ═══ 首页 ═══ -->
 <div class="page active" id="p-intro">
-  <div class="intro-inner" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center">
-    <div class="ink-circle" id="moon-circle"><span class="shop-ico" id="moon-phase">🌑</span><span id="beast-in-moon" style="position:absolute;font-size:28px;opacity:0;bottom:26px;right:20px;transition:opacity 0.8s ease"></span></div>
+  <div class="intro-inner" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 20px 80px;text-align:center">
+    <div class="ink-circle" id="moon-circle"><span class="shop-ico" id="moon-phase">🌙</span><span id="beast-in-moon" style="position:absolute;font-size:28px;opacity:0;bottom:26px;right:20px;transition:opacity 0.8s ease"></span></div>
     <div class="intro-title">后悔小卖部</div>
     <div class="intro-seal">专治嘴硬 · 内耗 · 想太多</div>
     <div class="intro-divider" style="width:160px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:16px auto"></div>
@@ -675,7 +675,7 @@ function confirmSell(){
 
 
 // 月相与导航联动
-const MOON_PHASES={'p-intro':'🌑','p-quiz':'🌙','p-result':'🌕','p-pool':'🌘'};
+const MOON_PHASES={'p-intro':'🌙','p-quiz':'🌙','p-result':'🌕','p-pool':'🌘'};
 function updateMoon(pageId){
   const mp=document.getElementById('moon-phase');
   if(mp&&MOON_PHASES[pageId])mp.textContent=MOON_PHASES[pageId];
@@ -691,9 +691,13 @@ function updateMoon(pageId){
 }
 renderPool();updateBal();
 // 首次点击自动播放音乐
-document.addEventListener("click",function startOnce(){
+function autoStartMusic(){
   toggleMusic();
-},{once:true});
+  document.removeEventListener("click",autoStartMusic);
+  document.removeEventListener("touchstart",autoStartMusic);
+}
+document.addEventListener("click",autoStartMusic);
+document.addEventListener("touchstart",autoStartMusic);
 </script>
 </body>
 </html>
