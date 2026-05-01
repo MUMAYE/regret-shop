@@ -49,7 +49,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
 
 /* 药丸入口 */
 .pill-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
-.pill-btn{position:relative;width:148px;padding:24px 16px;border-radius:16px;cursor:pointer;border:1px solid transparent;transition:all 0.35s;overflow:hidden;background:var(--card)}
+.pill-btn{position:relative;appearance:none;-webkit-appearance:none;background:var(--card);border:1px solid transparent;-webkit-tap-highlight-color:transparent;width:148px;padding:24px 16px;border-radius:16px;cursor:pointer;border:1px solid transparent;transition:all 0.35s;overflow:hidden;background:var(--card)}
 .pill-btn::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;border-radius:16px}
 .pill-btn.zhu{border-color:rgba(155,35,53,0.35)}
 .pill-btn.zhu::before{background:radial-gradient(ellipse at 50% 0%,rgba(155,35,53,0.25),transparent 70%)}
@@ -250,13 +250,13 @@ ${1}calc(72px + env(safe-area-inset-bottom,0px))}
       <span style="font-size:13px;color:var(--muted)">——放心，吃不死人，最多认清自己</span>
     </div>
     <div class="pill-row">
-      <div class="pill-btn zhu" onclick="choosePill('zhu')">
+      <button class="pill-btn zhu" onclick="choosePill('zhu')">
         <span class="pill-ico" style="color:#ff8080">🔴</span>
         <div class="pill-nm">朱砂丸</div>
         <div class="pill-sub">给还想重来的人<br>说错话·错过人·没抓住</div>
         <span class="pill-tag">我想改变一个选择</span>
-      </div>
-      <div class="pill-btn qing" onclick="choosePill('qing')">
+      </button>
+      <button class="pill-btn qing" onclick="choosePill('qing')">
         <span class="pill-ico" style="color:#7eecd4">🟢</span>
         <div class="pill-nm">青瓷丸</div>
         <div class="pill-sub">给决定放过自己的人<br>和解·摆烂·变段子</div>
