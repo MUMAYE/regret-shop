@@ -691,6 +691,18 @@ function updateMoon(pageId){
 }
 renderPool();updateBal();
 // 首次点击自动播放音乐
+function toggleMusic(){
+  const btn=document.getElementById('music-btn');
+  if(!musicOn){
+    musicOn=true;
+    if(btn){btn.textContent='🔔';btn.style.color='var(--gold2)';}
+    startMusic();
+  } else {
+    musicOn=false;
+    if(btn){btn.textContent='🎵';btn.style.color='var(--gold)';}
+    stopMusic();
+  }
+}
 function autoStartMusic(){
   toggleMusic();
   document.removeEventListener("click",autoStartMusic);
