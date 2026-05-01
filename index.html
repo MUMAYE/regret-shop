@@ -83,8 +83,8 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
 .pill-btn.zhu .pill-tag{background:rgba(155,35,53,0.15);color:var(--zhu2)}
 .pill-btn.qing .pill-tag{background:rgba(26,53,112,0.15);color:var(--qing2)}
 
-.btn-pool-peek{background:none;border:1px solid rgba(201,163,74,0.25);color:rgba(201,163,74,0.7);padding:8px 22px;border-radius:20px;cursor:pointer;font-size:13px;transition:all 0.25s;letter-spacing:1px}
-.btn-pool-peek:hover{border-color:var(--gold);color:var(--gold)}
+.btn-pool-peek{background:rgba(201,163,74,0.1);border:1px solid rgba(201,163,74,0.6);color:var(--gold2);padding:12px 34px;border-radius:20px;cursor:pointer;font-size:15px;transition:all 0.25s;letter-spacing:2px;text-shadow:0 0 12px rgba(201,163,74,0.5)}
+.btn-pool-peek:hover{border-color:var(--gold);background:rgba(201,163,74,0.2);color:var(--gold3);transform:translateY(-2px)}
 
 /* ══════════════════════════════
    QUIZ
@@ -262,30 +262,29 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
 <!-- ═══ 首页 ═══ -->
 <div class="page active" id="p-intro">
   <div class="intro-inner" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center">
-    <div class="ink-circle"><span class="shop-ico">🌙</span></div>
+    <div class="ink-circle" id="moon-circle"><span class="shop-ico" id="moon-phase">🌑</span><span id="beast-in-moon" style="position:absolute;font-size:28px;opacity:0;bottom:26px;right:20px;transition:opacity 0.8s ease"></span></div>
     <div class="intro-title">后悔小卖部</div>
     <div class="intro-seal">专治嘴硬 · 内耗 · 想太多</div>
     <div class="intro-divider" style="width:160px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:16px auto"></div>
     <div class="intro-tagline">
-      本店出售<em>无效后悔药</em><br>
-      但包你<em>笑一下</em>，顺便认清自己<br>
-      <span style="font-size:13px;color:var(--muted)">——放心，吃不死人，本店概不负责</span>
+      <em>后悔</em>是世间最贵的东西<br>本店专经此药，不保治愈<br>
+      <span style="font-size:13px;color:var(--muted)">——仙家不说谎，只话有缘</span>
     </div>
     <div class="pill-row">
       <div class="pill-btn zhu" onclick="choosePill('zhu')">
-        <span class="pill-ico" style="color:#ff4444;filter:drop-shadow(0 0 12px #cc2222)">❤️</span>
+        <span class="pill-ico" style="font-size:44px;filter:drop-shadow(0 0 18px rgba(220,50,50,0.9))">🔴</span>
         <div class="pill-nm">朱砂丸</div>
         <div class="pill-sub">给还想重来的人<br>说错话·错过人·没抓住</div>
         <span class="pill-tag">我想改变一个选择</span>
       </div>
       <div class="pill-btn qing" onclick="choosePill('qing')">
-        <span class="pill-ico" style="color:#5599ff;filter:drop-shadow(0 0 12px #3366cc)">💙</span>
+        <span class="pill-ico" style="font-size:44px;filter:drop-shadow(0 0 18px rgba(50,100,220,0.9))">🔵</span>
         <div class="pill-nm">忘忧丸</div>
         <div class="pill-sub">给决定放过自己的人<br>和解·摆烂·变段子</div>
         <span class="pill-tag">我想跟这件事和解</span>
       </div>
     </div>
-    <div style="margin-top:20px">
+    <div style="margin-top:32px">
       <button class="btn-pool-peek" onclick="navTo('p-pool','bnav-pool')">先看看别人吃出了什么 →</button>
     </div>
   </div>
@@ -439,55 +438,50 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
   // 竹叶飘落
 })();
 
-// ── 音乐 ──
-let audioCtx=null,musicNodes=[],musicOn=false;
-function initAudio(){
-  if(audioCtx)return;
-  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-}
-function playNote(freq,start,dur,vol=0.06,type='sine'){
-  const o=audioCtx.createOscillator();
-  const g=audioCtx.createGain();
-  o.connect(g);g.connect(audioCtx.destination);
-  o.type=type;o.frequency.value=freq;
-  g.gain.setValueAtTime(0,start);
-  g.gain.linearRampToValueAtTime(vol,start+0.08);
-  g.gain.exponentialRampToValueAtTime(0.001,start+dur);
-  o.start(start);o.stop(start+dur+0.1);
-  musicNodes.push(o);
+// ── 音乐引擎 v3 ── 纯五声音阶，模拟古筝/笛 ──
+let musicOn=false,_mCtx=null,_mTimer=null;
+function _playFlute(){
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC)return 20000;
+  const ctx=new AC();
+  const out=ctx.createGain();out.gain.value=0.5;out.connect(ctx.destination);
+  const rev=ctx.createDelay(0.6);const rfb=ctx.createGain();rfb.gain.value=0.18;
+  rev.connect(rfb);rfb.connect(rev);rev.connect(out);
+  function n(f,w,d,v=0.06){
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    const o2=ctx.createOscillator(),g2=ctx.createGain();
+    o.type='sine';o.frequency.value=f;
+    o2.type='sine';o2.frequency.value=f*3;g2.gain.value=0.07;
+    g.gain.setValueAtTime(0,w);
+    g.gain.linearRampToValueAtTime(v,w+0.15);
+    g.gain.setValueAtTime(v*0.8,w+d*0.65);
+    g.gain.exponentialRampToValueAtTime(0.001,w+d);
+    o.connect(g);g.connect(out);g.connect(rev);
+    o2.connect(g2);g2.connect(out);
+    o.start(w);o.stop(w+d+0.1);o2.start(w);o2.stop(w+d+0.1);
+  }
+  // D宫五声: D4 F#4 A4 B4 D5
+  const S=[293.66,369.99,440.00,493.88,587.33,659.25,739.99];
+  const sc=[
+    [S[2],0,2.2,0.06],[S[1],2.2,1.0,0.05],[S[0],3.2,1.6,0.04],
+    [S[3],5.0,1.4,0.06],[S[4],6.4,1.2,0.07],[S[5],7.6,2.0,0.06],
+    [S[4],9.8,1.0,0.05],[S[2],10.8,0.8,0.04],[S[1],11.6,0.8,0.04],[S[0],12.4,2.2,0.05],
+    [S[3],14.8,1.0,0.05],[S[5],15.8,0.8,0.06],[S[6],16.6,1.8,0.07],[S[5],18.4,3.0,0.04],
+  ];
+  const T=21.8;
+  sc.forEach(a=>n(...a));
+  n(S[0]*0.5,0,T,0.022);
+  return {ctx,ms:T*1000};
 }
 function startMusic(){
-  initAudio();
-  // 竹笛五声音阶循环 D E G A B
-  const scale=[293.66,329.63,392,440,493.88,587.33,659.25];
-  const now=audioCtx.currentTime;
-  let t=now;
-  function loop(){
-    if(!musicOn)return;
-    const melody=[
-      [scale[0],1.2],[scale[2],0.8],[scale[4],1.0],[scale[3],0.6],
-      [scale[2],1.4],[scale[1],0.8],[scale[0],1.0],[scale[4],0.6],
-      [scale[5],1.2],[scale[4],0.8],[scale[3],0.6],[scale[2],1.6],
-      [scale[1],0.8],[scale[0],1.0],[scale[2],0.6],[scale[4],2.0],
-    ];
-    melody.forEach(([f,d])=>{
-      playNote(f,t,d*1.1,0.055,'sine');
-      // 泛音
-      playNote(f*2,t,d*0.8,0.018,'sine');
-      t+=d*0.72;
-    });
-    // 低频和弦背景
-    [146.83,220].forEach(f=>playNote(f,now,t-now+2,0.025,'triangle'));
-    setTimeout(loop,(t-audioCtx.currentTime-1)*1000);
-  }
-  loop();
+  if(_mCtx){try{_mCtx.close();}catch(e){}}_mCtx=null;
+  const {ctx,ms}=_playFlute();_mCtx=ctx;
+  if(musicOn)_mTimer=setTimeout(startMusic,ms-400);
 }
-function toggleMusic(){
-  const btn=document.getElementById('music-btn');
-  if(!musicOn){
-    musicOn=true;btn.textContent='🔔';btn.style.color='var(--gold2)';
-    startMusic();
-  } else {
+function stopMusic(){
+  clearTimeout(_mTimer);
+  if(_mCtx){try{_mCtx.close();}catch(e){}}_mCtx=null;
+}else {
     musicOn=false;btn.textContent='🎵';btn.style.color='var(--gold)';
     musicNodes.forEach(n=>{try{n.stop()}catch(e){}});musicNodes=[];
   }
@@ -541,6 +535,7 @@ function navTo(pageId,navId){
   document.querySelectorAll('.bnav').forEach(b=>b.classList.remove('on'));
   $(navId).classList.add('on');
   window.scrollTo(0,0);
+  updateMoon(pageId);
   const tb=$('topbar');
   tb.classList.toggle('vis', pageId!=='p-intro');
 }
@@ -682,10 +677,26 @@ function confirmSell(){
   navTo('p-pool','bnav-pool');
 }
 
+
+// 月相与导航联动
+const MOON_PHASES={'p-intro':'🌑','p-quiz':'🌙','p-result':'🌕','p-pool':'🌘'};
+function updateMoon(pageId){
+  const mp=document.getElementById('moon-phase');
+  if(mp&&MOON_PHASES[pageId])mp.textContent=MOON_PHASES[pageId];
+  if(pageId==='p-result'){
+    setTimeout(()=>{
+      const bm=document.getElementById('beast-in-moon');
+      if(bm&&curBeast){bm.textContent=curBeast.emoji;bm.style.opacity='0.7';}
+    },400);
+  } else {
+    const bm=document.getElementById('beast-in-moon');
+    if(bm)bm.style.opacity='0';
+  }
+}
 renderPool();updateBal();
 // 首次点击自动播放音乐
-document.addEventListener('click',function startOnce(){
-  if(!musicOn){musicOn=true;const btn=document.getElementById('music-btn');if(btn){btn.textContent='🔔';btn.style.color='var(--gold2)';}startMusic();}
+document.addEventListener("click",function startOnce(){
+  toggleMusic();
 },{once:true});
 </script>
 </body>
