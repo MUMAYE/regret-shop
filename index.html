@@ -9,11 +9,11 @@
 :root{
   --bg:#060d08;--bg2:#0a1410;--card:#0f1a12;--card2:#162018;
   --zhu:#9b2335;--zhu2:#d4455a;--zhu3:#ff8080;
-  --qing:#1a5c52;--qing2:#2da88a;--qing3:#7eecd4;
+  --qing:#1a3570;--qing2:#4a7fd4;--qing3:#a0c8ff;
   --gold:#c9a34a;--gold2:#e8c96a;--gold3:#fff3c0;
   --text:#f0e6d0;--muted:#7a6a50;--dim:#3a2e20;
   --border:rgba(201,163,74,0.2);
-  --zhu-glow:rgba(155,35,53,0.4);--qing-glow:rgba(26,92,82,0.4);
+  --zhu-glow:rgba(155,35,53,0.4);--qing-glow:rgba(26,53,112,0.5);
   --gold-glow:rgba(201,163,74,0.35);
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -55,7 +55,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
 #p-intro{align-items:center;justify-content:center;text-align:center;background:var(--bg)}
 .intro-inner{padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:0}
 .ink-circle{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(155,35,53,0.15) 0%,rgba(26,92,82,0.1) 50%,transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:24px;position:relative;animation:breathe 4s ease-in-out infinite}
-@keyframes breathe{0%,100%{box-shadow:0 0 40px rgba(155,35,53,0.2),0 0 80px rgba(26,92,82,0.1)}50%{box-shadow:0 0 80px rgba(155,35,53,0.4),0 0 120px rgba(26,92,82,0.2)}}
+@keyframes breathe{0%,100%{box-shadow:0 0 40px rgba(155,35,53,0.2),0 0 80px rgba(26,92,82,0.1)}50%{box-shadow:0 0 80px rgba(155,35,53,0.4),0 0 120px rgba(26,53,112,0.2)}}
 .ink-circle .shop-ico{font-size:72px;filter:drop-shadow(0 0 20px rgba(201,163,74,0.6))}
 .intro-title{font-size:48px;font-weight:900;letter-spacing:8px;color:var(--gold);text-shadow:0 0 40px var(--gold-glow),0 0 80px rgba(201,163,74,0.2);margin-bottom:6px;line-height:1}
 .intro-seal{font-size:11px;letter-spacing:4px;color:var(--muted);margin-bottom:6px;border:1px solid var(--dim);padding:3px 16px;border-radius:2px;display:inline-block}
@@ -69,19 +69,19 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
 .pill-btn::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;border-radius:16px}
 .pill-btn.zhu{border-color:rgba(155,35,53,0.35)}
 .pill-btn.zhu::before{background:radial-gradient(ellipse at 50% 0%,rgba(155,35,53,0.25),transparent 70%)}
-.pill-btn.qing{border-color:rgba(26,92,82,0.35)}
-.pill-btn.qing::before{background:radial-gradient(ellipse at 50% 0%,rgba(26,92,82,0.25),transparent 70%)}
+.pill-btn.qing{border-color:rgba(26,53,112,0.45)}
+.pill-btn.qing::before{background:radial-gradient(ellipse at 50% 0%,rgba(26,53,112,0.3),transparent 70%)}
 .pill-btn:hover::before{opacity:1}
 .pill-btn:hover.zhu{border-color:var(--zhu2);box-shadow:0 16px 48px var(--zhu-glow),inset 0 1px 0 rgba(255,128,128,0.1);transform:translateY(-5px)}
-.pill-btn:hover.qing{border-color:var(--qing2);box-shadow:0 16px 48px var(--qing-glow),inset 0 1px 0 rgba(126,236,212,0.1);transform:translateY(-5px)}
+.pill-btn:hover.qing{border-color:var(--qing2);box-shadow:0 16px 48px var(--qing-glow),inset 0 1px 0 rgba(160,200,255,0.15);transform:translateY(-5px)}
 .pill-ico{font-size:36px;margin-bottom:10px;display:block;filter:drop-shadow(0 4px 12px currentColor)}
 .pill-nm{font-size:18px;font-weight:800;letter-spacing:3px;margin-bottom:6px}
 .pill-btn.zhu .pill-nm{color:var(--zhu3)}
 .pill-btn.qing .pill-nm{color:var(--qing3)}
 .pill-sub{font-size:11px;color:var(--muted);line-height:1.6}
-.pill-tag{font-size:10px;margin-top:8px;padding:2px 10px;border-radius:10px;display:inline-block;letter-spacing:1px}
+.pill-tag{font-size:10px;margin-top:20px;padding:2px 10px;border-radius:10px;display:inline-block;letter-spacing:1px}
 .pill-btn.zhu .pill-tag{background:rgba(155,35,53,0.15);color:var(--zhu2)}
-.pill-btn.qing .pill-tag{background:rgba(26,92,82,0.15);color:var(--qing2)}
+.pill-btn.qing .pill-tag{background:rgba(26,53,112,0.15);color:var(--qing2)}
 
 .btn-pool-peek{background:none;border:1px solid rgba(201,163,74,0.25);color:rgba(201,163,74,0.7);padding:8px 22px;border-radius:20px;cursor:pointer;font-size:13px;transition:all 0.25s;letter-spacing:1px}
 .btn-pool-peek:hover{border-color:var(--gold);color:var(--gold)}
@@ -93,7 +93,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
 .qz-top{text-align:center;margin-bottom:28px}
 .qz-badge{display:inline-block;padding:4px 18px;border-radius:20px;font-size:11px;letter-spacing:2px;margin-bottom:10px}
 .qz-badge.zhu{background:rgba(155,35,53,0.2);color:var(--zhu2);border:1px solid rgba(155,35,53,0.3)}
-.qz-badge.qing{background:rgba(26,92,82,0.2);color:var(--qing2);border:1px solid rgba(26,92,82,0.3)}
+.qz-badge.qing{background:rgba(26,53,112,0.2);color:var(--qing2);border:1px solid rgba(26,53,112,0.35)}
 .qz-h{font-size:18px;color:var(--gold);letter-spacing:3px;font-weight:800}
 
 .prog-wrap{margin-bottom:28px}
@@ -280,12 +280,12 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
       </div>
       <div class="pill-btn qing" onclick="choosePill('qing')">
         <span class="pill-ico" style="color:#7eecd4">🟢</span>
-        <div class="pill-nm">青瓷丸</div>
+        <div class="pill-nm">忘忧丸</div>
         <div class="pill-sub">给决定放过自己的人<br>和解·摆烂·变段子</div>
         <span class="pill-tag">我想跟这件事和解</span>
       </div>
     </div>
-    <div style="margin-top:8px">
+    <div style="margin-top:20px">
       <button class="btn-pool-peek" onclick="navTo('p-pool','bnav-pool')">先看看别人吃出了什么 →</button>
     </div>
   </div>
@@ -365,10 +365,10 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
 
 <!-- ═══ 底部导航 ═══ -->
 <div class="bottom-nav">
-  <button class="bnav on" id="bnav-home" onclick="navTo('p-intro','bnav-home')"><span class="bi">🏮</span>进店</button>
-  <button class="bnav" id="bnav-quiz" onclick="navTo('p-quiz','bnav-quiz')"><span class="bi">⚗️</span>问诊</button>
-  <button class="bnav" id="bnav-result" onclick="navTo('p-result','bnav-result')"><span class="bi">🦌</span>灵兽</button>
-  <button class="bnav" id="bnav-pool" onclick="navTo('p-pool','bnav-pool')"><span class="bi">🏊</span>瑶池</button>
+  <button class="bnav on" id="bnav-home" onclick="navTo('p-intro','bnav-home')"><span class="bi">🌑</span>进店</button>
+  <button class="bnav" id="bnav-quiz" onclick="navTo('p-quiz','bnav-quiz')"><span class="bi">🌙</span>问诊</button>
+  <button class="bnav" id="bnav-result" onclick="navTo('p-result','bnav-result')"><span class="bi">🌕</span>灵兽</button>
+  <button class="bnav" id="bnav-pool" onclick="navTo('p-pool','bnav-pool')"><span class="bi">🌘</span>瑶池</button>
 </div>
 
 <!-- 出售弹窗 -->
@@ -381,7 +381,7 @@ body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino 
     <div class="fg"><label>签文（一句总结）</label><input type="text" id="s-sign" placeholder="例：冲动是魔鬼，手机是凶器" maxlength="30"></div>
     <div class="fg-row">
       <div class="fg"><label>药丸类型</label>
-        <select id="s-type"><option value="zhu">朱砂丸系</option><option value="qing">青瓷丸系</option></select>
+        <select id="s-type"><option value="zhu">朱砂丸系</option><option value="qing">忘忧丸系</option></select>
       </div>
       <div class="fg"><label>定价（两）</label><input type="number" id="s-price" placeholder="10-999" min="10" max="999"></div>
     </div>
@@ -557,7 +557,7 @@ function navTo(pageId,navId){
 // ── 问诊 ──
 function choosePill(type){
   pill=type; answers=[]; curQ=0;
-  $('qz-badge').textContent=type==='zhu'?'🔴 朱砂丸问诊':'🟢 青瓷丸问诊';
+  $('qz-badge').textContent=type==='zhu'?'🔴 朱砂丸问诊':'🟢 忘忧丸问诊';
   $('qz-badge').className='qz-badge '+(type==='zhu'?'zhu':'qing');
   renderQ();
   navTo('p-quiz','bnav-quiz');
@@ -596,7 +596,7 @@ function calcResult(){
   $('r-nm').textContent=curBeast.name;
   const pt=$('r-ptag');
   if(pill==='zhu'){pt.textContent='朱砂丸系';pt.style.cssText='background:rgba(155,35,53,0.15);color:#d4455a;border:1px solid rgba(155,35,53,0.3);border-radius:10px;font-size:11px;padding:3px 14px;letter-spacing:2px'}
-  else{pt.textContent='青瓷丸系';pt.style.cssText='background:rgba(26,92,82,0.15);color:#2da88a;border:1px solid rgba(26,92,82,0.3);border-radius:10px;font-size:11px;padding:3px 14px;letter-spacing:2px'}
+  else{pt.textContent='忘忧丸系';pt.style.cssText='background:rgba(26,53,112,0.15);color:#2da88a;border:1px solid rgba(26,53,112,0.35);border-radius:10px;font-size:11px;padding:3px 14px;letter-spacing:2px'}
   $('r-symptom').textContent=curBeast.symptom;
   $('r-merit').textContent=curBeast.merit;
   $('r-remedy').textContent=curBeast.remedy;
@@ -614,7 +614,7 @@ function renderPool(){
   if(!data.length){el.innerHTML='<div style="text-align:center;padding:48px;color:var(--muted);letter-spacing:1px">此处尚空，快去问诊炼药 🏮</div>';return}
   el.innerHTML=data.map(r=>{
     const owned=myBox.includes(r.id);
-    const tl=r.type==='zhu'?'🔴 朱砂系':r.type==='qing'?'🟢 青瓷系':'✨ 通用';
+    const tl=r.type==='zhu'?'🔴 朱砂系':r.type==='qing'?'🟢 忘忧丸系':'✨ 通用';
     return`<div class="recipe ${r.type}">
       <div class="recipe-meta">
         <span class="recipe-beast"><span style="font-size:16px">${r.bIco}</span>${r.beast} · ${tl}</span>
@@ -653,7 +653,7 @@ function openBuyModal(id){
   const r=POOL.find(x=>x.id===id);if(!r)return;
   buyId=id;
   $('bm-name').textContent='《'+r.name+'》';
-  $('bm-meta').textContent=r.beast+' '+r.bIco+' · '+(r.type==='zhu'?'朱砂丸系':'青瓷丸系');
+  $('bm-meta').textContent=r.beast+' '+r.bIco+' · '+(r.type==='zhu'?'朱砂丸系':'忘忧丸系');
   $('bm-symptom').textContent=r.symptom;
   $('bm-sign').textContent='「'+r.sign+'」';
   $('bm-price').textContent=r.price+' 两';
